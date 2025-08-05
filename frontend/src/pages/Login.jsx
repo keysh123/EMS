@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, {useState } from "react";
+import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+  const {login} = useAuth()
+  const navigate=useNavigate()
   const [credentials, setCredentials] = useState({
     email: "",
     password: ""
   });
+  const [error , setError] = useState(false)
   const handleChange = async (e) => {
+    setError('')
     setCredentials((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -14,6 +21,39 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(credentials);
+    try{
+      const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`,{
+        method : 'POST',
+         headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials)
+      })
+      const data = await result.json()
+      if(data.success){
+        login(data.user)
+        localStorage.setItem('token' , data.token)
+        if(data.user.role === 'admin'){
+          navigate('/admin-dashboard')
+        }
+        else{
+          navigate('/employee-dashboard')
+        }
+        toast.success('User login in successfully')
+
+      }
+      else{
+        setError(data?.message || data?.error || 'Some error try again later')
+        toast.error(data?.message || data?.error || 'Some error try again later')
+      }
+      console.log(data);
+      
+
+    }
+    catch(err){
+      console.log(err);
+      
+    }
     
   }
 
@@ -25,6 +65,7 @@ const Login = () => {
         </h2>
         <div className="border-none shadow p-6 w-80 bg-white">
           <h2 className="text-2xl font-bold mb-4">Login</h2>
+          {error && <p className="text-red-500"> {error}</p>}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label htmlFor="email" className=" block text-gray-700">
@@ -37,6 +78,7 @@ const Login = () => {
                 type="email"
                 name="email"
                 placeholder="Enter Email"
+                required
               />
             </div>
             <div className="mb-4">
@@ -50,6 +92,7 @@ const Login = () => {
                 type="password"
                 name="password"
                 placeholder="Enter password"
+                required
               />
             </div>
             <div className="mb-4 flex items-center justify-between ">
