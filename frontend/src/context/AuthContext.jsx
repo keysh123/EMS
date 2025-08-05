@@ -10,7 +10,7 @@ const userContext = createContext();
 
 const AuthContext = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading,setLoading] = useState(false)
+  const [loading,setLoading] = useState(true)
   
   useEffect(() => {
      setLoading(true)
@@ -21,7 +21,7 @@ const AuthContext = ({ children }) => {
         const result = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/user/verify`,
           {
-            method: "POST",
+            method: "GET",
             headers: {
               "Content-Type": "application/json",
               "Authorization" : `Bearer ${token}`
@@ -34,7 +34,7 @@ const AuthContext = ({ children }) => {
           login(data.user);
         }
         else{
-          // navigate('/login')
+          
           setUser(null)
           toast.error(data.message || "Error , logIn again");
         }
@@ -50,13 +50,15 @@ const AuthContext = ({ children }) => {
   },[]);
   const login = (user) => {
     setUser(user);
+    
+    
   };
   const logout = () => {
     setUser(null);
     localStorage.removeItem("token");
   };
   return (
-    <userContext.Provider value={{ user, login, logout }}>
+    <userContext.Provider value={{ user, login, logout , loading }}>
       {children}
     </userContext.Provider>
   );
