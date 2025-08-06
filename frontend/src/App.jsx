@@ -10,6 +10,7 @@ import PrivateRoutes from "./utils/PrivateRoutes";
 import RoleBasedRoutes from "./utils/RoleBasedRoutes";
 import AdminSummary from "./components/AdminSummary";
 import DepartmentList from "./components/DepartmentList";
+import AddDepartment from "./components/AddDepartment";
 
 const App = () => {
   const { user } = useAuth();
@@ -45,6 +46,7 @@ const App = () => {
           >
             <Route index element={<AdminSummary/>}/>
             <Route path="/admin-dashboard/departments" element={<DepartmentList/>}/>
+            <Route path="/admin-dashboard/add-department" element={<AddDepartment/>}/>
             </Route>
           <Route
             path="/employee-dashboard"
