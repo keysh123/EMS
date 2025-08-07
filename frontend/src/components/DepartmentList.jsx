@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 const DepartmentList = () => {
   const [departments, setDepartments] = useState([]);
+  const [filteredDepartments, setFilteredDepartments] = useState([]);
   const [loading, setLoading] = useState(false); // NEW
 
   const fetchDepartments = async () => {
@@ -38,6 +39,7 @@ const DepartmentList = () => {
       }));
 
       setDepartments(modifiedData || []);
+      setFilteredDepartments(modifiedData || [])
     } catch (error) {
       console.error(error);
       toast.error("Failed to load departments");
@@ -45,6 +47,14 @@ const DepartmentList = () => {
       setLoading(false); // STOP LOADING
     }
   };
+  const filterDepartments = async (e) => {
+    // if(e.value.trim() == ''){
+    //   setFilteredDepartments(departments)
+    //   return
+    // }
+    const data = departments?.filter((dept)=> dept.name.toLowerCase().includes(e.target.value.trim().toLowerCase()))
+    setFilteredDepartments(data)
+  }
 
   useEffect(() => {
     fetchDepartments();
@@ -60,7 +70,8 @@ const DepartmentList = () => {
         <input
           type="text"
           placeholder="Search Department"
-          className="px-5 py-0.5 border bg-white"
+          className="px-5 py-1 border bg-white"
+          onChange={filterDepartments}
         />
         <Link
           to="/admin-dashboard/add-department"
@@ -73,7 +84,7 @@ const DepartmentList = () => {
       <div className="mt-5">
         <DataTable
           columns={columns}
-          data={departments}
+          data={filteredDepartments}
           progressPending={loading} // BUILT-IN LOADING UI
           pagination
           highlightOnHover

@@ -10,6 +10,7 @@ export const columns = [
   {
     name: "Department name",
     selector: (row) => row.name,
+    sortable : true
   },
   {
     name: "Action",
