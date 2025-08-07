@@ -11,6 +11,7 @@ import RoleBasedRoutes from "./utils/RoleBasedRoutes";
 import AdminSummary from "./components/AdminSummary";
 import DepartmentList from "./components/DepartmentList";
 import AddDepartment from "./components/AddDepartment";
+import EditComponent from "./components/EditComponent";
 
 const App = () => {
   const { user } = useAuth();
@@ -47,6 +48,7 @@ const App = () => {
             <Route index element={<AdminSummary/>}/>
             <Route path="/admin-dashboard/departments" element={<DepartmentList/>}/>
             <Route path="/admin-dashboard/add-department" element={<AddDepartment/>}/>
+            <Route path="/admin-dashboard/department/:id" element={<EditComponent/>}/>
             </Route>
           <Route
             path="/employee-dashboard"
