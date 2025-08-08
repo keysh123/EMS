@@ -12,6 +12,9 @@ import AdminSummary from "./components/AdminSummary";
 import DepartmentList from "./components/DepartmentList";
 import AddDepartment from "./components/AddDepartment";
 import EditComponent from "./components/EditComponent";
+import EmployeeList from "./components/EmployeeList";
+import AddEmployee from "./components/AddEmployee";
+import EditEmployee from "./components/EditEmployee";
 
 const App = () => {
   const { user } = useAuth();
@@ -47,8 +50,11 @@ const App = () => {
           >
             <Route index element={<AdminSummary/>}/>
             <Route path="/admin-dashboard/departments" element={<DepartmentList/>}/>
+            <Route path="/admin-dashboard/employees" element={<EmployeeList/>}/>
             <Route path="/admin-dashboard/add-department" element={<AddDepartment/>}/>
+            <Route path="/admin-dashboard/add-employee" element={<AddEmployee/>}/>
             <Route path="/admin-dashboard/department/:id" element={<EditComponent/>}/>
+            <Route path="/admin-dashboard/employees/edit/:id" element={<EditEmployee/>}/>
             </Route>
           <Route
             path="/employee-dashboard"
